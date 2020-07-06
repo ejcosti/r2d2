@@ -5,6 +5,9 @@ module R2D2
     attr_reader :protocol_version, :recipient_id, :verification_keys, :signature, :signed_message
 
     def initialize(token_attrs, recipient_id:, verification_keys:)
+      token_attrs.deep_transform_keys!(&:to_s)
+      verification_keys.deep_transform_keys!(&:to_s)
+
       @protocol_version = token_attrs['protocolVersion']
       @recipient_id = recipient_id
       @verification_keys = verification_keys
@@ -38,7 +41,7 @@ module R2D2
         'Google',
         recipient_id,
         protocol_version,
-        signed_message
+        signed_message.to_json
       )
       verified = verification_keys['keys'].any? do |key|
         next if key['protocolVersion'] != protocol_version
