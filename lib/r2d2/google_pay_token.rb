@@ -36,6 +36,10 @@ module R2D2
     private
 
     def verify_and_parse_message
+      puts "protocol_version:  #{protocol_version}"
+      puts "verification_keys:  #{verification_keys['keys']}"
+
+
       digest = OpenSSL::Digest::SHA256.new
       signed_bytes = to_length_value(
         'Google',
